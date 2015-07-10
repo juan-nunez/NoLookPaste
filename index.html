@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html data-ng-app='app' data-ng-csp=''>
 <head>
-	<title>EasyCopyPaste</title>
+	<title>NoLookPaste</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/angular-csp.css">
 	<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
 </head>
 <body>
 	<div class="container">
 		<div ng-controller="MainController">
-			<h1> EasyCopyPaste</h1>
+			<h1> NoLookPaste </h1>
 			{{directory}}
-			<button class="btn btn-default" ng-click="click()">click</button>
-			<input type="text" ng-model="InputText"></input>
-			<button class="btn btn-default" ng-click="write(InputText)">writeTo</button>
-			<button class="btn btn-danger" ng-click="getSelectionText()">select</button>
-			<textarea type="text"> hello world </textarea>
+			<button class="btn btn-default" ng-click="chooseEntry()">Select File</button>
+			<button ng-click="toggleSpace()">Space between paste</button>
+			<button ng-click="toggleLineBreak()">Line break between paste</button>
 		</div>
 	</div>
 </body>
 </html>
 
-<!--Angular -->
+<!--scripts-->
 <script src="js/vendor/angular.min.js"></script>
 <script src="js/vendor/AngularRoute.js"></script>
+<script src="js/vendor/jquery-1.11.3.min.js"></script>
+<script src="js/vendor/bootstrap.min.js"></script>
+
 
 <!--app-->
 <script src="js/app.js"></script>

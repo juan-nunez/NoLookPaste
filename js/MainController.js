@@ -1,22 +1,24 @@
 angular.module('app')
 	.controller('MainController',function($scope){
 
+		chrome.commands.onCommand.addListener(function(command){
+			var text=getClipboardText();
+			write(text);
+		});
 
-		window.addEventListener("keydown",checkKeyPressed,false);
-
-		$scope.directory="No Directory Selected";
+		$scope.directory="No file Selected";
 		var chosenEntry=null;
-		$scope.inputText="";
-		$scope.click = function(){
+
+		$scope.chooseEntry = function(){
 			 chrome.fileSystem.chooseEntry({type: 'openWritableFile'}, function(entry) {
 			 	chosenEntry=entry;
 			 	console.log(chosenEntry);
-			    $scope.displayPath(entry.fullPath);
+			    displayPath(entry.fullPath);
 			});
 		};
 
 
-		$scope.displayPath = function(path){
+		function displayPath(path){
 			$scope.directory=path;
 			$scope.$apply();	
 		};
@@ -25,7 +27,7 @@ angular.module('app')
  			 console.error(e);
 		}
 
-		$scope.write = function(data){
+		function write(data){
 			chosenEntry.createWriter(function(fileWriter){
 				fileWriter.onwrite = function(e){
 					console.log('Completed');
@@ -34,27 +36,72 @@ angular.module('app')
 					console.log("FAILED");
 				};
 				fileWriter.seek(fileWriter.length);
+				if(linebreak)data="\n"+data;
+				else if(space)data=" "+data;
+				else data=data;
 				var bb= new Blob([data],{type:'text/plain'});
 				fileWriter.write(bb);
 			},errorHandler);
 		}
 
-		$scope.getSelectionText = function(){
-		    var text = "";
-		    if (window.getSelection){
-		        text = window.getSelection().toString();
-		        $scope.write(text);
+		function getClipboardText() {
+		    // create div element for pasting into
+		    var pasteDiv = document.createElement("div");
+
+		    // place div outside the visible area
+		    pasteDiv.style.position = "absolute";
+		    pasteDiv.style.left = "-10000px";
+		    pasteDiv.style.top = "-10000px";
+
+		    // set contentEditable mode
+		    pasteDiv.contentEditable = true;
+
+		    // find a good place to add the div to the document
+		    var insertionElement = document.activeElement; // start with the currently active element
+		    var nodeName = insertionElement.nodeName.toLowerCase(); // get the element type
+		    while (nodeName !== "body" && nodeName !== "div" && nodeName !== "li" && nodeName !== "th" && nodeName !== "td") { // if have not reached an element that it is valid to insert a div into (stopping eventually with 'body' if no others are found first)
+		        insertionElement = insertionElement.parentNode; // go up the hierarchy
+		        nodeName = insertionElement.nodeName.toLowerCase(); // get the element type
 		    }
 
-		   
+		    // add element to document
+		    insertionElement.appendChild(pasteDiv);
+
+		    // paste the current clipboard text into the element
+		    pasteDiv.focus();
+		    document.execCommand('paste');
+
+		    // get the pasted text from the div
+		    var clipboardText = pasteDiv.innerText;
+
+		    // remove the temporary element
+		    insertionElement.removeChild(pasteDiv);
+
+		    // return the text
+		    return clipboardText;
 		}
 
-		function checkKeyPressed(e){
-			if(e.keyCode=="65"){
-				console.log("key logged");
-				$scope.getSelectionText();
+		var linebreak=false;
+		var space=false;
+
+
+		$scope.toggleSpace = function(){
+			if(space==false){
+				space=true;
+				if(linebreak)linebreak=false;
 			}
+			else
+				space=false;
 		}
 
-	
+		$scope.toggleLineBreak = function(){
+			if(linebreak==false){
+				linebreak=true;
+				if(space)space=false;
+			}
+			else
+				linebreak=false;
+		}
+		
+		
 	});
