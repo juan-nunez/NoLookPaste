@@ -36,8 +36,8 @@ angular.module('app')
 					console.log("FAILED");
 				};
 				fileWriter.seek(fileWriter.length);
-				if(linebreak)data="\n"+data;
-				else if(space)data=" "+data;
+				if($scope.linebreak)data="\n"+data;
+				else if($scope.space)data=" "+data;
 				else data=data;
 				var bb= new Blob([data],{type:'text/plain'});
 				fileWriter.write(bb);
@@ -81,26 +81,27 @@ angular.module('app')
 		    return clipboardText;
 		}
 
-		var linebreak=false;
-		var space=false;
+		$scope.linebreak=false;
+		$scope.space=false;
 
 
 		$scope.toggleSpace = function(){
-			if(space==false){
-				space=true;
-				if(linebreak)linebreak=false;
+			
+			if($scope.space==false){
+				$scope.space=true;
+				if($scope.linebreak)
+					$scope.linebreak=false;
 			}
-			else
-				space=false;
+			else $scope.space=false;
 		}
 
 		$scope.toggleLineBreak = function(){
-			if(linebreak==false){
-				linebreak=true;
-				if(space)space=false;
+			if($scope.linebreak==false){
+				$scope.linebreak=true;
+				if($scope.space)
+					$scope.space=false;
 			}
-			else
-				linebreak=false;
+			else $scope.linebreak=false;
 		}
 		
 		

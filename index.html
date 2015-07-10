@@ -12,8 +12,10 @@
 			<h1> NoLookPaste </h1>
 			{{directory}}
 			<button class="btn btn-default" ng-click="chooseEntry()">Select File</button>
-			<button ng-click="toggleSpace()">Space between paste</button>
-			<button ng-click="toggleLineBreak()">Line break between paste</button>
+			<div class="ToggleOptions">
+				<div class="ToggleSpace" ng-class="{'toggle-active': space}" ng-click="toggleSpace()">Space between paste</div>
+				<div class="ToggleLineBreak" ng-class="{'toggle-active': linebreak}" ng-click="toggleLineBreak()">Line break between paste</div>
+		    </div>
 		</div>
 	</div>
 </body>

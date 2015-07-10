@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
  
-  "name": "EasyCopyPaste",
+  "name": "NoLookPaste",
   "description": "This extension will allow a user to copy and paste easier",
   "version": "1.0", 
   "commands":{
