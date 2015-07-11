@@ -1,25 +1,29 @@
 body{
 	background-color:#8C8C7A;
+	text-align:center;
 }
 
-
 .ToggleOptions{
-	margin-top:5em;
-	width:20em;
+	margin-top:2em;
+	width:15em;
 	background-color:#D6D699;
 	text-align:center;
 	padding: 4pt 4pt 4pt 4pt;
 	border-radius: 8pt;
+	margin-left:3.7em;
 }
 
 .ToggleSpace{
-	margin-bottom:3em;
+	margin-bottom:1em;
 	background-color:#EAEACC;
+	padding: 2pt 2pt 2pt 2pt;
+	border-radius: 4pt;
 }
 
 .ToggleLineBreak{
-	
 	background-color:#EAEACC;
+	padding: 2pt 2pt 2pt 2pt;
+	border-radius: 4pt;
 }
 
 .toggle-active{

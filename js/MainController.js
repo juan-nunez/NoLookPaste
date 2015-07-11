@@ -12,14 +12,13 @@ angular.module('app')
 		$scope.chooseEntry = function(){
 			 chrome.fileSystem.chooseEntry({type: 'openWritableFile'}, function(entry) {
 			 	chosenEntry=entry;
-			 	console.log(chosenEntry);
 			    displayPath(entry.fullPath);
 			});
 		};
 
 
 		function displayPath(path){
-			$scope.directory=path;
+			$scope.directory=path.substring(1);
 			$scope.$apply();	
 		};
 
@@ -29,14 +28,9 @@ angular.module('app')
 
 		function write(data){
 			chosenEntry.createWriter(function(fileWriter){
-				fileWriter.onwrite = function(e){
-					console.log('Completed');
-				};
-				fileWriter.onerror=function(e){
-					console.log("FAILED");
-				};
 				fileWriter.seek(fileWriter.length);
-				if($scope.linebreak)data="\n"+data;
+				if(fileWriter.length==0)data=data;
+				else if($scope.linebreak)data="\n"+"\n"+data;
 				else if($scope.space)data=" "+data;
 				else data=data;
 				var bb= new Blob([data],{type:'text/plain'});
@@ -44,6 +38,8 @@ angular.module('app')
 			},errorHandler);
 		}
 
+
+		//hacky function to get the clipboard text from  document.execCommand('paste');
 		function getClipboardText() {
 		    // create div element for pasting into
 		    var pasteDiv = document.createElement("div");
