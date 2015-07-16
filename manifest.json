@@ -2,7 +2,7 @@
   "manifest_version": 2,
  
   "name": "NoLookPaste",
-  "description": "This extension will allow a user to copy and paste easier",
+  "description": "Copy and paste without looking at file",
   "version": "1.0", 
   "commands":{
     "CopyPaste":{
@@ -21,7 +21,9 @@
    }
   },
   "icons":{
-    "128": "icon.png"
+    "128": "icon128.png",
+    "48": "icon48.png",
+    "16": "icon16.png"
    },
   "permissions": [
   "clipboardRead",

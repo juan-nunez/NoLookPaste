@@ -9,10 +9,11 @@ angular.module('app')
 		$scope.directory="No file Selected";
 		var chosenEntry=null;
 
+		
 		$scope.chooseEntry = function(){
-			 chrome.fileSystem.chooseEntry({type: 'openWritableFile'}, function(entry) {
+			 chrome.fileSystem.chooseEntry({type: 'openWritableFile', accepts:[{extensions: ["txt"]}]}, function(entry) {
 			 	chosenEntry=entry;
-			    displayPath(entry.fullPath);
+			   	displayPath(entry.fullPath);
 			});
 		};
 
@@ -26,6 +27,7 @@ angular.module('app')
  			 console.error(e);
 		}
 
+		//writes given text to chosen file
 		function write(data){
 			chosenEntry.createWriter(function(fileWriter){
 				fileWriter.seek(fileWriter.length);
@@ -41,42 +43,27 @@ angular.module('app')
 
 		//hacky function to get the clipboard text from  document.execCommand('paste');
 		function getClipboardText() {
-		    // create div element for pasting into
 		    var pasteDiv = document.createElement("div");
-
-		    // place div outside the visible area
 		    pasteDiv.style.position = "absolute";
 		    pasteDiv.style.left = "-10000px";
 		    pasteDiv.style.top = "-10000px";
-
-		    // set contentEditable mode
 		    pasteDiv.contentEditable = true;
-
-		    // find a good place to add the div to the document
-		    var insertionElement = document.activeElement; // start with the currently active element
-		    var nodeName = insertionElement.nodeName.toLowerCase(); // get the element type
-		    while (nodeName !== "body" && nodeName !== "div" && nodeName !== "li" && nodeName !== "th" && nodeName !== "td") { // if have not reached an element that it is valid to insert a div into (stopping eventually with 'body' if no others are found first)
-		        insertionElement = insertionElement.parentNode; // go up the hierarchy
-		        nodeName = insertionElement.nodeName.toLowerCase(); // get the element type
+		    var insertionElement = document.activeElement; 
+		    var nodeName = insertionElement.nodeName.toLowerCase(); 
+		    while (nodeName !== "body" && nodeName !== "div" && nodeName !== "li" && nodeName !== "th" && nodeName !== "td") { 
+		        insertionElement = insertionElement.parentNode; 
+		        nodeName = insertionElement.nodeName.toLowerCase(); 
 		    }
-
-		    // add element to document
 		    insertionElement.appendChild(pasteDiv);
-
-		    // paste the current clipboard text into the element
 		    pasteDiv.focus();
 		    document.execCommand('paste');
-
-		    // get the pasted text from the div
 		    var clipboardText = pasteDiv.innerText;
-
-		    // remove the temporary element
 		    insertionElement.removeChild(pasteDiv);
 
-		    // return the text
 		    return clipboardText;
 		}
 
+		//will be used for visual toggling
 		$scope.linebreak=false;
 		$scope.space=false;
 
@@ -99,6 +86,4 @@ angular.module('app')
 			}
 			else $scope.linebreak=false;
 		}
-		
-		
 	});
