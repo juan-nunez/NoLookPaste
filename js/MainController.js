@@ -32,7 +32,7 @@ angular.module('app')
 			chosenEntry.createWriter(function(fileWriter){
 				fileWriter.seek(fileWriter.length);
 				if(fileWriter.length==0)data=data;
-				else if($scope.linebreak)data="\n"+"\n"+data;
+				else if($scope.linebreak)data="\r\n"+"\r\n"+data;
 				else if($scope.space)data=" "+data;
 				else data=data;
 				var bb= new Blob([data],{type:'text/plain'});
